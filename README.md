@@ -1,6 +1,6 @@
 # simulacao_distribuicoes
 
-Distribuição Triangular
-Distribuição Normal
-Distribuição Uniforme
-Distribuição de Poisson
+Distribuição Triangular \n
+Distribuição Normal \n
+Distribuição Uniforme \n
+Distribuição de Poisson \n

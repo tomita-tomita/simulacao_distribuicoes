@@ -1,10 +1,16 @@
+var dist = require('./distributions.js')
+var PD = require("probability-distributions");
+
+
+const qtd_amostas = 20;
+
 var amostras = [];
 var amostras_nao_repetidas = [];
 
-for (var i = 0; i < 20; i++){
+for (var i = 0; i < qtd_amostas; i++){
     amostras[i] = Math.floor((Math.random() * 10) +1) ;
 }
-console.log(amostras);
+//console.log("Amostras: "+amostras);
 
 for(var i = 0; i < amostras.length; i++){		
     amostras_nao_repetidas[i] = amostras[i];				
@@ -18,9 +24,13 @@ for (var i = 0; i < amostras_nao_repetidas.length; i++) {
         }
     }							  
 }
-console.log(amostras_nao_repetidas);
+
+//console.log("Números sorteados(repetidos): "+amostras_nao_repetidas);
 for (var i = 0; i < amostras_nao_repetidas.length; i++){
-    console.log (amostras_nao_repetidas[i]+' apareceu: '+quantas_vezes_aparece(amostras_nao_repetidas[i]));
+    //console.log (amostras_nao_repetidas[i]+' apareceu: '+quantas_vezes_aparece(amostras_nao_repetidas[i])+" vezes");        
+    var qtd = quantas_vezes_aparece(amostras_nao_repetidas[i]);
+    lambda = qtd/qtd_amostas;
+    console.log(amostras_nao_repetidas[i] + ' => '+qtd+' ---> '+lambda+' => '+dist.poisson(qtd, lambda));
 }
 
 function quantas_vezes_aparece (num){

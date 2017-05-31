@@ -10,7 +10,7 @@ var amostras_nao_repetidas = [];
 for (var i = 0; i < qtd_amostas; i++){
     amostras[i] = Math.floor((Math.random() * 10) +1) ;
 }
-//console.log("Amostras: "+amostras);
+console.log("Amostras: "+amostras);
 
 for(var i = 0; i < amostras.length; i++){		
     amostras_nao_repetidas[i] = amostras[i];				

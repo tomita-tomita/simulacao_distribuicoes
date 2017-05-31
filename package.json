@@ -1,0 +1,25 @@
+{
+  "name": "simulacao_distribuicoes",
+  "version": "1.0.0",
+  "description": "Distribuição Triangular \\n Distribuição Normal \\n Distribuição Uniforme \\n Distribuição de Poisson \\n",
+  "main": "app.js",
+  "dependencies": {
+    "math-factorial": "^1.0.0",
+    "probability-distributions": "^0.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomita-tomita/simulacao_distribuicoes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomita-tomita/simulacao_distribuicoes/issues"
+  },
+  "homepage": "https://github.com/tomita-tomita/simulacao_distribuicoes#readme"
+}

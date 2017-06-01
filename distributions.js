@@ -59,6 +59,35 @@ module.exports = {
         }   
 
         return toReturn
-    },      
+    },
+
+    /**
+     *
+     * @param amostras Conjunto de amostras              
+     * @returns {number} Media
+     */
+    media: function(amostras) {                            
+        var media = 0; 
+        for(var i = 0; i< amostras.length; i++){
+            media = media + amostras[i];
+        }    
+        return media/amostras.length;
+    },
+
+    /**
+     *
+     * @param amostras Conjunto de amostras      
+     * @param media Media do conjunto de amostras        
+     * @returns {number} Variancia
+     */
+    variancia: function(amostras, media) {                            
+        var variancia = 0;        
+        for(var i = 0; i< amostras.length; i++){
+            var num = amostras[i];
+            variancia = variancia + Math.pow((num - media), 2);
+        }     
+        return variancia/(amostras.length - 1);
+    },           
+               
 
 };

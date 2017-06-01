@@ -27,6 +27,7 @@ for (var i = 0; i < amostras_nao_repetidas.length; i++) {
 console.log("Amostras não repetidas: "+ amostras_nao_repetidas);
 //poisson();
 /*Poisson */
+//X => seja o número de ocorrências de um evento em um intervalo
 function poisson () {
     for (var i = 0; i < amostras_nao_repetidas.length; i++){
         var num = amostras_nao_repetidas[i];            

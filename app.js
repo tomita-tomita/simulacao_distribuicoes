@@ -55,7 +55,7 @@ function triangular (){
 }
 
 /*Uniforme */
-uniforme();
+//uniforme();
 function uniforme (){
     var maior = maior_encontrado();
     var menor = menor_encontrado(); 
@@ -67,6 +67,40 @@ function uniforme (){
         console.log('\nNúmero '+ num + ' apareceu '+ qtd +' vezes ');
         console.log('Uniforme('+ num +') = '+dist.uniforme(maior, menor, num));    
     }      
+}
+
+/*Normal */
+//Media
+//Desvio Padrão
+//Achar o Z
+normal();
+function normal (){
+    console.log(calcula_media());
+    console.log(calcula_variancia());  
+    console.log(calcula_desvio_padrao(calcula_variancia()))      
+}
+
+
+function calcula_variancia (){    
+    var variancia = 0;
+    var media = calcula_media();
+    for(var i = 0; i< amostras.length; i++){
+        var num = amostras[i];
+        variancia = variancia + Math.pow((num - media), 2);
+    }     
+    return variancia/(amostras.length - 1);
+}
+
+function calcula_media (){   
+    var media = 0; 
+    for(var i = 0; i< amostras.length; i++){
+        media = media + amostras[i];
+    }    
+    return media/amostras.length;
+}
+
+function calcula_desvio_padrao (variancia){
+    return Math.sqrt(variancia);
 }
 
 function quantas_vezes_aparece (num){

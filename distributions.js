@@ -2,9 +2,45 @@ var factorial = require( 'math-factorial' );
 
 
 var pow = Math.pow;
+var raiz = Math.sqrt;
 const logNatural = 2.71;
 
 module.exports = {
+
+    /**
+     *
+     * @param qtd Quantidade de amostras desejadas
+     * @param max Número máximo a ser sorteado     
+     * @returns {array} Amostras sorteadas
+     */
+    gerarAmostras: function(qtd, max) {                            
+        var amostras = [];
+
+        for (var i = 0; i < qtd; i++){
+            amostras[i] = Math.floor((Math.random() * max) +1) ;
+        }
+
+        return amostras
+    },
+
+    /**
+     *
+     * @param amostras Amostras a serem analisadas        
+     * @returns {array} Amostras com números unicos
+     */
+    retirarRepetidos: function(amostras) {                            
+        var amostras_sem_repeticao = amostras;        
+        for (var i = 0; i < amostras_sem_repeticao.length; i++) {
+            for(var j = i+1; j < amostras_sem_repeticao.length; j++){
+                if(amostras_sem_repeticao[i] == amostras_sem_repeticao[j]){            
+                    amostras_sem_repeticao.splice(j, 1);            
+                    j--;
+                }
+            }							  
+        }
+        return amostras_sem_repeticao
+    },    
+
     /**
      *
      * @param n Número sorteado.
@@ -88,6 +124,14 @@ module.exports = {
         }     
         return variancia/(amostras.length - 1);
     },           
-               
+
+    /**
+     *
+     * @param variancia Variancias                 
+     * @returns {number} Desvio Padrão
+     */
+    desvioPadrao: function(variancia) {                                           
+        return raiz(variancia);
+    },                 
 
 };

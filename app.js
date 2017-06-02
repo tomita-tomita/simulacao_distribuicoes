@@ -1,30 +1,14 @@
 var dist = require('./distributions.js')
+const chalk = require('chalk');
 var PD = require("probability-distributions");
 
+const QTD_AMOSTRAS = 20;
+const MAX = 10
+var amostras = dist.gerarAmostras(QTD_AMOSTRAS, MAX);
+console.log(chalk.green("Amostras: ")+ amostras);
+var amostras_nao_repetidas = dist.retirarRepetidos(amostras);
+console.log(chalk.yellow("Amostras não repetidas: ")+ amostras_nao_repetidas);
 
-const qtd_amostas = 20;
-
-var amostras = [];
-var amostras_nao_repetidas = [];
-
-for (var i = 0; i < qtd_amostas; i++){
-    amostras[i] = Math.floor((Math.random() * 10) +1) ;
-}
-console.log("Amostras: "+ amostras);
-
-for(var i = 0; i < amostras.length; i++){		
-    amostras_nao_repetidas[i] = amostras[i];				
-}
-
-for (var i = 0; i < amostras_nao_repetidas.length; i++) {
-    for(var j = i+1; j < amostras_nao_repetidas.length; j++){
-        if(amostras_nao_repetidas[i] == amostras_nao_repetidas[j]){            
-            amostras_nao_repetidas.splice(j, 1);            
-            j--;
-        }
-    }							  
-}
-console.log("Amostras não repetidas: "+ amostras_nao_repetidas);
 //poisson();
 /*Poisson */
 //X => seja o número de ocorrências de um evento em um intervalo
@@ -56,7 +40,7 @@ function triangular (){
 }
 
 /*Uniforme */
-//uniforme();
+uniforme();
 function uniforme (){
     var maior = maior_encontrado();
     var menor = menor_encontrado(); 
@@ -74,35 +58,35 @@ function uniforme (){
 //Media
 //Desvio Padrão
 //Achar o Z
-normal();
+//normal();
 function normal (){
-    console.log(calcula_media());
-    console.log(calcula_variancia());  
-    console.log(calcula_desvio_padrao(calcula_variancia()))      
+    console.log(dist.media(amostras));
+    console.log(dist.variancia(amostras, dist.media(amostras)));  
+    console.log(dist.desvioPadrao(dist.variancia(amostras, dist.media(amostras))));      
 }
 
 
-function calcula_variancia (){    
-    var variancia = 0;
-    var media = calcula_media();
-    for(var i = 0; i< amostras.length; i++){
-        var num = amostras[i];
-        variancia = variancia + Math.pow((num - media), 2);
-    }     
-    return variancia/(amostras.length - 1);
-}
+// function calcula_variancia (){    
+//     var variancia = 0;
+//     var media = calcula_media();
+//     for(var i = 0; i< amostras.length; i++){
+//         var num = amostras[i];
+//         variancia = variancia + Math.pow((num - media), 2);
+//     }     
+//     return variancia/(amostras.length - 1);
+// }
 
-function calcula_media (){   
-    var media = 0; 
-    for(var i = 0; i< amostras.length; i++){
-        media = media + amostras[i];
-    }    
-    return media/amostras.length;
-}
+// function calcula_media (){   
+//     var media = 0; 
+//     for(var i = 0; i< amostras.length; i++){
+//         media = media + amostras[i];
+//     }    
+//     return media/amostras.length;
+// }
 
-function calcula_desvio_padrao (variancia){
-    return Math.sqrt(variancia);
-}
+// function calcula_desvio_padrao (variancia){
+//     return Math.sqrt(variancia);
+// }
 
 function quantas_vezes_aparece (num){
     var cont = 0;

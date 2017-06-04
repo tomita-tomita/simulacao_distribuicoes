@@ -1,11 +1,34 @@
 var factorial = require( 'math-factorial' );
-
+var crypto = require('crypto');
 
 var pow = Math.pow;
 var raiz = Math.sqrt;
+var exp = Math.exp;
+var PI = Math.PI;
+var ln = Math.log;
+var sqrt = Math.sqrt;
 const logNatural = 2.71;
 
 module.exports = {
+
+    /**
+     * This is the core function for generating entropy
+     *
+     * @param len number of bytes of entropy to create
+     * @returns {number} A pseduo random number between 0 and 1
+     *
+     */
+    prng: function(len) {
+        if(len === undefined) len=16;
+
+        var entropy = crypto.randomBytes(len);
+        var result = 0;
+
+        for(var i=0; i<len; i++) {
+            result = result + Number(entropy[i])/pow(256,(i+1))
+        }
+        return result
+    },    
 
     /**
      *
@@ -22,24 +45,7 @@ module.exports = {
 
         return amostras
     },
-
-    /**
-     *
-     * @param amostras Amostras a serem analisadas        
-     * @returns {array} Amostras com números unicos
-     */
-    retirarRepetidos: function(amostras) {                            
-        var amostras_sem_repeticao = amostras;        
-        for (var i = 0; i < amostras_sem_repeticao.length; i++) {
-            for(var j = i+1; j < amostras_sem_repeticao.length; j++){
-                if(amostras_sem_repeticao[i] == amostras_sem_repeticao[j]){            
-                    amostras_sem_repeticao.splice(j, 1);            
-                    j--;
-                }
-            }							  
-        }
-        return amostras_sem_repeticao
-    },    
+   
 
     /**
      *
@@ -99,6 +105,21 @@ module.exports = {
 
     /**
      *
+     * @param num Número aleatório
+     * @param media Media das amostras
+     * @param dsp Desvio padrão das amostras
+     * @returns {Number}
+     */
+    normal: function(num, media, dsp) {                
+        var a = dsp*(sqrt(2*PI));
+        var b = -(num-media)*(num-media);
+        var c = 2*dsp*dsp;
+
+        return (1/a)*exp(b/c)
+    },    
+
+    /**
+     *
      * @param amostras Conjunto de amostras              
      * @returns {number} Media
      */
@@ -133,5 +154,107 @@ module.exports = {
     desvioPadrao: function(variancia) {                                           
         return raiz(variancia);
     },                 
+
+    /**
+     *
+     * @param obtidos Valores obtidos pelas distribuições                 
+     * @param esperado Valore esperado pelas amostras
+     * @returns {number} Chi-Quadrado
+     */
+    chiQuadrado: function(obtidos, esperado) {                                           
+        var chi = 0;        
+        for (var i = 0; i < obtidos.length; i++){
+            chi = chi + Math.pow((obtidos[i] - esperado), 2) / esperado;
+        }
+        return chi;        
+    },     
+
+    /**
+     *
+     * @param n Número de amostras a serem geradas
+     * @param lambda Lambda a ser usado
+     * @returns {Array} Array com amostras geradas
+     */
+    rpoison: function(n, lambda) {
+        var toReturn = [];
+        for(var i = 0; i < n; i++) {
+            var L = exp(-lambda);
+            var p = 1;
+            var k = 0;
+            do {
+                k++;
+                p *= this.prng();
+            } while (p > L);
+            toReturn.push(k - 1);
+        }
+
+        return toReturn
+    },    
+
+    /**
+     *
+     * @param n 
+     * @param meida Meida a ser usada
+     * @param sd Desvio padrão
+     * @returns {Array} Amostras geradas
+     */
+    rnormal: function(n, mean, sd) {      
+        var toReturn = [];
+
+        for(var i = 0; i < n; i++) {
+            var V1, V2, S, X;
+
+            do {
+                var U1 = this.prng();
+                var U2 = this.prng();
+                V1 = (2 * U1) - 1;
+                V2 = (2 * U2) - 1;
+                S = (V1 * V1) + (V2 * V2);
+            } while (S > 1);
+
+            X = Math.sqrt(-2 * ln(S) / S) * V1;
+            X = mean + sd * X;
+            toReturn.push(X);
+        }
+
+        return toReturn
+    },    
+
+    /**
+     *
+     * @param n  Número de amostras a serem geradas
+     * @param min Número mínimo
+     * @param max Número máximo
+     * @returns {Array} Array amostras geradas
+     */
+    runiforme: function(n, min, max) {
+        var toReturn = [];
+
+        for(var i = 0; i < n; i++) {
+            var num = this.prng();
+            var gerado = min + num*(max-min);
+            toReturn.push(gerado)
+        }
+        return toReturn
+    },   
+    
+    /**
+     *
+     * @param n  Número de amostras a serem geradas
+     * @param min Número mínimo
+     * @param max Número máximo
+     * @param mais Número que mais repete
+     * @returns {Array} Array amostras geradas
+     */
+    rtriangular: function(n, min, max, mais) {
+        var toReturn = [];
+        for(var i = 0; i < n; i++) {
+            var num = this.prng();     
+            var num2 = this.prng();                        
+            var gerado = max + (min + (num * (mais - min) - max) * sqrt(num2));
+            toReturn.push(gerado);
+        }
+        return toReturn
+    },        
 
 };

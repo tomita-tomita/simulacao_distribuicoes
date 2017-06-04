@@ -4,9 +4,9 @@
   "description": "Distribuição Triangular \\n Distribuição Normal \\n Distribuição Uniforme \\n Distribuição de Poisson \\n",
   "main": "app.js",
   "dependencies": {
-    "math-factorial": "^1.0.0",
-    "probability-distributions": "^0.9.1",
-    "chalk": "^1.1.3"
+    "chalk": "^1.1.3",
+    "json2csv": "^3.7.3",
+    "math-factorial": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

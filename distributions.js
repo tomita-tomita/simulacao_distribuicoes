@@ -12,14 +12,13 @@ const logNatural = 2.71;
 module.exports = {
 
     /**
-     * This is the core function for generating entropy
      *
-     * @param len number of bytes of entropy to create
+     * @param len Número de bytes
      * @returns {number} A pseduo random number between 0 and 1
      *
      */
     prng: function(len) {
-        if(len === undefined) len=16;
+        if(len === undefined) len = 16;
 
         var entropy = crypto.randomBytes(len);
         var result = 0;

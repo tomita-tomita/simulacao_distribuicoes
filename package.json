@@ -12,15 +12,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tomita-tomita/simulacao_distribuicoes.git"
-  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tomita-tomita/simulacao_distribuicoes/issues"
-  },
-  "homepage": "https://github.com/tomita-tomita/simulacao_distribuicoes#readme"
+  "license": "ISC"
 }

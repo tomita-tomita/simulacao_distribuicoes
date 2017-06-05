@@ -64,14 +64,16 @@ rl.on('close', function() {
     function poisson () {    
         lambda = dist.media(amostras);   
         var resultsPoisson = [];
+        var esperadoPoisson = [];
         exibe(chalk.blue.bold("\nDistribuição Poisson"));
         exibe("lambda: "+lambda);
         for (var i = 0; i < amostrasSemRepeticao.length; i++){
             var num = amostrasSemRepeticao[i];            
             var qtd = quantas_vezes_aparece(num);                         
-            resultsPoisson[i] = dist.poisson(qtd, lambda);           
+            resultsPoisson[i] = dist.poisson(qtd, lambda);
+            esperadoPoisson[i] = qtd/QTD_AMOSTRAS;           
         }
-        chiPoisson = dist.chiQuadrado(resultsPoisson, ESPERADO);
+        chiPoisson = dist.chiQuadrado(resultsPoisson, esperadoPoisson);
         arrayChi[0] = {nome: 'Poisson', chi: chiPoisson};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Poisson: "+chiPoisson)));
     }
@@ -82,7 +84,8 @@ rl.on('close', function() {
         mais_repete = numero_mais_repete();
         maior = maior_encontrado();
         menor = menor_encontrado();     
-        resultsTriangular = [];
+        var resultsTriangular = [];
+        var esperadosTriangular = [];
         exibe(chalk.blue.bold("\nDistribuição Triangular"));
         exibe("Maior: "+maior);
         exibe("Menor: "+menor);
@@ -90,9 +93,10 @@ rl.on('close', function() {
         for (var i = 0; i < amostrasSemRepeticao.length; i++){    
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);                             
-            resultsTriangular[i] = dist.triangular(maior, menor, mais_repete, num);        
+            resultsTriangular[i] = dist.triangular(maior, menor, mais_repete, num);
+            esperadosTriangular[i] = qtd/QTD_AMOSTRAS;        
         }    
-        chiTriangular = dist.chiQuadrado(resultsTriangular, ESPERADO)
+        chiTriangular = dist.chiQuadrado(resultsTriangular, esperadosTriangular);
         arrayChi[1] = {nome: 'Triangular', chi: chiTriangular};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Triangular: "+chiTriangular)));
     }
@@ -103,6 +107,7 @@ rl.on('close', function() {
         maior = maior_encontrado();
         menor = menor_encontrado();     
         var resultsUniforme = [];
+        var esperadosuniforme = [];
         exibe(chalk.blue.bold("\nDistribuição Uniforme"));
         exibe("Maior: "+maior);
         exibe("Menor: "+menor);   
@@ -110,8 +115,9 @@ rl.on('close', function() {
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);                             
             resultsUniforme[i] = dist.uniforme(maior, menor, num);
+            esperadosuniforme[i] = qtd/QTD_AMOSTRAS;
         }      
-        chiUniforme = dist.chiQuadrado(resultsUniforme, ESPERADO);
+        chiUniforme = dist.chiQuadrado(resultsUniforme, esperadosuniforme);
         arrayChi[2] = {nome: 'Uniforme', chi: chiUniforme};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Uniforme: "+chiUniforme)));
     }
@@ -123,6 +129,7 @@ rl.on('close', function() {
         variancia = dist.variancia(amostras, dist.media(amostras));
         desvioPadrao = dist.desvioPadrao(variancia);    
         var resultsNormal = [];
+        var esperadosNormal = [];
         exibe(chalk.blue.bold("\nDistribuição Normal"));
         exibe("Media: "+media);
         exibe("Variancia: "+variancia);
@@ -130,9 +137,10 @@ rl.on('close', function() {
         for (var i = 0; i < amostrasSemRepeticao.length; i++){
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);       
-            resultsNormal[i] = dist.normal(num, media, desvioPadrao);            
+            resultsNormal[i] = dist.normal(num, media, desvioPadrao);
+            esperadosNormal[i] = qtd/QTD_AMOSTRAS;            
         }  
-        chiNormal = dist.chiQuadrado(resultsNormal, ESPERADO);
+        chiNormal = dist.chiQuadrado(resultsNormal, esperadosNormal);
         arrayChi[3] = {nome: 'Normal', chi: chiNormal};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Normal: "+chiNormal)));      
     }

@@ -160,10 +160,10 @@ module.exports = {
      * @param esperado Valore esperado pelas amostras
      * @returns {number} Chi-Quadrado
      */
-    chiQuadrado: function(obtidos, esperado) {                                           
+    chiQuadrado: function(obtidos, esperados) {                                           
         var chi = 0;        
-        for (var i = 0; i < obtidos.length; i++){
-            chi = chi + Math.pow((obtidos[i] - esperado), 2) / esperado;
+        for (var i = 0; i < obtidos.length; i++){            
+            chi = chi + Math.pow((obtidos[i] - esperados[i]), 2) / esperados[i];
         }
         return chi;        
     },     

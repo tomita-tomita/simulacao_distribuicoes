@@ -52,10 +52,10 @@ module.exports = {
      * @param lambda Lambda gerado     
      * @returns {number} Resultado poisson
      */
-    poisson: function(n, lambda) {                            
+    poisson: function(n, lambda, qtd) {                            
         var toReturn = null;
 
-        toReturn = (pow(logNatural, -lambda) * pow(lambda, n)) /  factorial(n);
+        toReturn = qtd*(pow(logNatural, -lambda) * pow(lambda, n)) /  factorial(n);
 
         return toReturn
     },
@@ -70,14 +70,14 @@ module.exports = {
      */
     triangular: function(maior, menor, mais, n) {                            
         var toReturn = null;
-        if(n >= menor && n < mais){
-            toReturn = (2*(n - menor)) / ((maior - menor) * (mais - menor));
+        if(n > menor && n < mais){            
+            toReturn = 2*(n - menor) / ((maior - menor) * (mais - menor));
         }else if(n == mais){
-            toReturn = 2/(maior - menor);
-        }else if(n > mais && n <= maior){
+            toReturn = 2/(maior - menor);            
+        }else if(n > mais && n < maior){
             toReturn = (2*(maior - n)) / ((maior - menor) * (maior - mais));
-        }else{
-            toReturn = 0;
+        }else{            
+            toReturn = 0.01;
         }        
 
         return toReturn
@@ -90,14 +90,10 @@ module.exports = {
      * @param n Número dentro das amostras     
      * @returns {number} Resultado triangular
      */
-    uniforme: function(maior, menor, n) {                            
+    uniforme: function(maior, n) {                            
         var toReturn = null;
-
-        if(n >= menor && n <= maior){
-            toReturn = 1/(maior - menor);
-        }else{
-            toReturn = 0;
-        }   
+        
+        toReturn = 1/maior;        
 
         return toReturn
     },
@@ -157,13 +153,13 @@ module.exports = {
     /**
      *
      * @param obtidos Valores obtidos pelas distribuições                 
-     * @param esperado Valore esperado pelas amostras
+     * @param esperado Valores esperado pelas amostras
      * @returns {number} Chi-Quadrado
      */
-    chiQuadrado: function(obtidos, esperados) {                                           
+    chiQuadrado: function(esperados, observados) {                                           
         var chi = 0;        
-        for (var i = 0; i < obtidos.length; i++){            
-            chi = chi + Math.pow((obtidos[i] - esperados[i]), 2) / esperados[i];
+        for (var i = 0; i < esperados.length; i++){                      
+            chi = chi + ((Math.pow((observados[i] - esperados[i]), 2)) / esperados[i]);            
         }
         return chi;        
     },     

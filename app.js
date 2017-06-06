@@ -34,7 +34,7 @@ rl.on('close', function() {
     //amostras = dist.gerarAmostras(QTD_AMOSTRAS, MAX);
     var QTD_AMOSTRAS = amostras.length;
     var MAX = QTD_AMOSTRAS / 2;
-    const ESPERADO = 1/QTD_AMOSTRAS;
+    const observado = 1/QTD_AMOSTRAS;
 
     exibe(chalk.blue("Amostras: ")+ amostras);
 
@@ -61,19 +61,33 @@ rl.on('close', function() {
 
     /*Poisson */
     poisson();
-    function poisson () {    
-        lambda = dist.media(amostras);   
+    function poisson () {              
         var resultsPoisson = [];
-        var esperadoPoisson = [];
-        exibe(chalk.blue.bold("\nDistribuição Poisson"));
+        var observadosPoisson = [];
+        var cima = 0;
+        var baixo = 0;
+        var lambda = 0;
+        exibe(chalk.blue.bold("\nDistribuição Poisson"));        
+        for(var i = 0; i < amostrasSemRepeticao.length; i++){
+            var num = amostrasSemRepeticao[i];                        
+            var qtd = quantas_vezes_aparece(num);            
+            cima = cima + (num * (qtd/QTD_AMOSTRAS));            
+        }
+
+        for(var i = 0; i < amostrasSemRepeticao.length; i++){
+            var num = amostrasSemRepeticao[i];                        
+            var qtd = quantas_vezes_aparece(num);            
+            baixo = baixo + (qtd/QTD_AMOSTRAS);            
+        }
+        lambda = cima/baixo;
         exibe("lambda: "+lambda);
         for (var i = 0; i < amostrasSemRepeticao.length; i++){
-            var num = amostrasSemRepeticao[i];            
-            var qtd = quantas_vezes_aparece(num);                         
-            resultsPoisson[i] = dist.poisson(qtd, lambda);
-            esperadoPoisson[i] = qtd/QTD_AMOSTRAS;           
+            var num = amostrasSemRepeticao[i];                        
+            var qtd = quantas_vezes_aparece(num);                     
+            resultsPoisson[i] = dist.poisson(num, lambda, QTD_AMOSTRAS);
+            observadosPoisson[i] = qtd/QTD_AMOSTRAS;           
         }
-        chiPoisson = dist.chiQuadrado(resultsPoisson, esperadoPoisson);
+        chiPoisson = dist.chiQuadrado(resultsPoisson, observadosPoisson);
         arrayChi[0] = {nome: 'Poisson', chi: chiPoisson};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Poisson: "+chiPoisson)));
     }
@@ -85,7 +99,7 @@ rl.on('close', function() {
         maior = maior_encontrado();
         menor = menor_encontrado();     
         var resultsTriangular = [];
-        var esperadosTriangular = [];
+        var observadosTriangular = [];
         exibe(chalk.blue.bold("\nDistribuição Triangular"));
         exibe("Maior: "+maior);
         exibe("Menor: "+menor);
@@ -93,10 +107,11 @@ rl.on('close', function() {
         for (var i = 0; i < amostrasSemRepeticao.length; i++){    
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);                             
-            resultsTriangular[i] = dist.triangular(maior, menor, mais_repete, num);
-            esperadosTriangular[i] = qtd/QTD_AMOSTRAS;        
+            resultsTriangular[i] = dist.triangular(maior, menor, mais_repete, num);      
+            //console.log(resultsTriangular[i]);      
+            observadosTriangular[i] = qtd/QTD_AMOSTRAS;        
         }    
-        chiTriangular = dist.chiQuadrado(resultsTriangular, esperadosTriangular);
+        chiTriangular = dist.chiQuadrado(resultsTriangular, observadosTriangular);
         arrayChi[1] = {nome: 'Triangular', chi: chiTriangular};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Triangular: "+chiTriangular)));
     }
@@ -107,7 +122,7 @@ rl.on('close', function() {
         maior = maior_encontrado();
         menor = menor_encontrado();     
         var resultsUniforme = [];
-        var esperadosuniforme = [];
+        var observadosuniforme = [];
         exibe(chalk.blue.bold("\nDistribuição Uniforme"));
         exibe("Maior: "+maior);
         exibe("Menor: "+menor);   
@@ -115,9 +130,9 @@ rl.on('close', function() {
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);                             
             resultsUniforme[i] = dist.uniforme(maior, menor, num);
-            esperadosuniforme[i] = qtd/QTD_AMOSTRAS;
+            observadosuniforme[i] = qtd/QTD_AMOSTRAS;
         }      
-        chiUniforme = dist.chiQuadrado(resultsUniforme, esperadosuniforme);
+        chiUniforme = dist.chiQuadrado(resultsUniforme, observadosuniforme);
         arrayChi[2] = {nome: 'Uniforme', chi: chiUniforme};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Uniforme: "+chiUniforme)));
     }
@@ -129,7 +144,7 @@ rl.on('close', function() {
         variancia = dist.variancia(amostras, dist.media(amostras));
         desvioPadrao = dist.desvioPadrao(variancia);    
         var resultsNormal = [];
-        var esperadosNormal = [];
+        var observadosNormal = [];
         exibe(chalk.blue.bold("\nDistribuição Normal"));
         exibe("Media: "+media);
         exibe("Variancia: "+variancia);
@@ -138,9 +153,9 @@ rl.on('close', function() {
             var num = amostrasSemRepeticao[i];     
             var qtd = quantas_vezes_aparece(num);       
             resultsNormal[i] = dist.normal(num, media, desvioPadrao);
-            esperadosNormal[i] = qtd/QTD_AMOSTRAS;            
+            observadosNormal[i] = qtd/QTD_AMOSTRAS;            
         }  
-        chiNormal = dist.chiQuadrado(resultsNormal, esperadosNormal);
+        chiNormal = dist.chiQuadrado(resultsNormal, observadosNormal);
         arrayChi[3] = {nome: 'Normal', chi: chiNormal};
         exibe(chalk.bgCyan(chalk.black.bold("Chi-Qradado Normal: "+chiNormal)));      
     }
